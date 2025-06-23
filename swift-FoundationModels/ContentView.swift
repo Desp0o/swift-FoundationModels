@@ -15,12 +15,23 @@ struct ContentView: View {
     VStack {
       ScrollView {
         VStack(alignment: .leading) {
-          ForEach(Array(vm.chat).reversed(), id: \.key) { question, answer in
-            VStack(alignment: .leading, spacing: 6) {
-              Text("Q: \(question)").bold()
-              Text("A: \(answer)")
+          ForEach(vm.chat, id: \.id) { message in
+            HStack {
+              Text("You: ")
+                .foregroundStyle(.pink)
+                .fontWeight(.bold)
+              Text(message.question)
+              
+              Spacer()
             }
-            .padding(.top, 8)
+            
+            HStack(alignment: .top) {
+              Text("AI: ")
+                .fontWeight(.bold)
+              Text(message.answer)
+              
+              Spacer()
+            }
           }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -67,7 +78,7 @@ import Observation
 @MainActor
 @Observable
 final class ContentViewModel {
-  var chat: [String: String] = [:]
+  var chat: [ResponseModel] = []
   var isLoading: Bool = false
   
   func askQuestion(question: String) {
@@ -81,7 +92,9 @@ final class ContentViewModel {
       
       do {
         let response = try await session.respond(to: question)
-        chat[question] = response.content
+        let model = ResponseModel(question: question, answer: response.content)
+        
+        chat.append(model)
       } catch {
         print(error)
       }
@@ -89,3 +102,8 @@ final class ContentViewModel {
   }
 }
 
+struct ResponseModel: Equatable {
+  let id = UUID()
+  let question: String
+  let answer: String
+}
