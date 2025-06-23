@@ -37,7 +37,7 @@ struct ContentView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
       }
       
-      TextField("Ask Question", text: $question)
+      TextField("Ask Question", text: $vm.question)
         .frame(height: 40)
         .padding(.horizontal, 20)
         .clipShape(RoundedRectangle(cornerRadius: 22))
@@ -46,7 +46,7 @@ struct ContentView: View {
         }
       
       Button {
-        vm.askQuestion(question: question)
+        vm.askQuestion()
       } label: {
         Text("ASK")
       }
@@ -79,9 +79,10 @@ import Observation
 @Observable
 final class ContentViewModel {
   var chat: [ResponseModel] = []
+  var question: String = ""
   var isLoading: Bool = false
   
-  func askQuestion(question: String) {
+  func askQuestion() {
     let session = LanguageModelSession()
     isLoading = true
     
@@ -93,7 +94,7 @@ final class ContentViewModel {
       do {
         let response = try await session.respond(to: question)
         let model = ResponseModel(question: question, answer: response.content)
-        
+        question = ""
         chat.append(model)
       } catch {
         print(error)
