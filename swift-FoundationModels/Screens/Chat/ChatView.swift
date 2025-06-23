@@ -4,12 +4,11 @@
 //
 //  Created by Despo on 19.06.25.
 //
-import FoundationModels
+
 import SwiftUI
-import Playgrounds
 
 struct ChatView: View {
-  @State private var vm = ContentViewModel()
+  @State private var vm = ChatViewModel()
   @State private var question: String = ""
   var body: some View {
     VStack {
@@ -73,38 +72,5 @@ struct ChatView: View {
   ChatView()
 }
 
-import Observation
 
-@MainActor
-@Observable
-final class ContentViewModel {
-  var chat: [ResponseModel] = []
-  var question: String = ""
-  var isLoading: Bool = false
-  
-  func askQuestion() {
-    let session = LanguageModelSession()
-    isLoading = true
-    
-    Task {
-      defer {
-        isLoading = false
-      }
-      
-      do {
-        let response = try await session.respond(to: question)
-        let model = ResponseModel(question: question, answer: response.content)
-        question = ""
-        chat.append(model)
-      } catch {
-        print(error)
-      }
-    }
-  }
-}
 
-struct ResponseModel: Equatable {
-  let id = UUID()
-  let question: String
-  let answer: String
-}
