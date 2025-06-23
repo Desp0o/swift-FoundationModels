@@ -8,7 +8,7 @@ import FoundationModels
 import SwiftUI
 import Playgrounds
 
-struct ContentView: View {
+struct ChatView: View {
   @State private var vm = ContentViewModel()
   @State private var question: String = ""
   var body: some View {
@@ -70,7 +70,7 @@ struct ContentView: View {
 }
 
 #Preview {
-  ContentView()
+  ChatView()
 }
 
 import Observation
