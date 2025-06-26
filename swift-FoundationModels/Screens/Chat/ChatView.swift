@@ -17,7 +17,7 @@ struct ChatView: View {
           ForEach(vm.chat, id: \.id) { message in
             HStack {
               Text("You: ")
-                .foregroundStyle(.pink)
+                .foregroundStyle(.black)
                 .fontWeight(.bold)
               Text(message.question)
               
@@ -26,15 +26,20 @@ struct ChatView: View {
             
             HStack(alignment: .top) {
               Text("AI: ")
+                .foregroundStyle(.black)
                 .fontWeight(.bold)
               Text(message.answer)
               
               Spacer()
             }
+            
+            Spacer()
+              .frame(height: 20)
           }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
       }
+      .scrollIndicators(.hidden)
       
       TextField("Ask Question", text: $vm.question)
         .frame(height: 40)
@@ -51,7 +56,8 @@ struct ChatView: View {
       }
       .buttonStyle(.glass)
     }
-    .animation(.default, value: vm.chat)
+    .padding()
+    .background(.indigo.gradient)
     .overlay {
       if vm.isLoading {
         VStack {
@@ -64,7 +70,7 @@ struct ChatView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
       }
     }
-    .padding()
+    .animation(.default, value: vm.chat)
   }
 }
 

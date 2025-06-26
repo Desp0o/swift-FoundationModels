@@ -13,6 +13,10 @@ struct Tabbar: View {
         Tab("Chat", systemImage: "ellipsis.message.fill") {
           ChatView()
         }
+        
+        Tab("Generate", systemImage: "gear") {
+          GenerableView()
+        }
       }
     }
 }
