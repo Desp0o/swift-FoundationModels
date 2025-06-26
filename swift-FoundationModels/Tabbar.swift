@@ -17,6 +17,10 @@ struct Tabbar: View {
         Tab("Generate", systemImage: "gear") {
           GenerableView()
         }
+        
+        Tab("Person", systemImage: "person.fill") {
+          GenerablePersonView()
+        }
       }
     }
 }
