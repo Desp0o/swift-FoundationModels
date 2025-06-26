@@ -27,5 +27,5 @@ This is a personal playground experimenting with Apple's newly introduced **Foun
 <img width="290" alt="5" src="https://github.com/user-attachments/assets/76d7fa43-ba67-4643-b29f-25a59cc88066" />
 
 ## Demo 🎥
-[Watch the video](https://youtube.com/shorts/6vQ-HgYl7XI?feature=share)
+[Watch the video](https://youtube.com/shorts/Ho4EoBIbaoE?feature=share)
 
