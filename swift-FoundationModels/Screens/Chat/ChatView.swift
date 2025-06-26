@@ -10,36 +10,59 @@ import SwiftUI
 struct ChatView: View {
   @State private var vm = ChatViewModel()
   @State private var question: String = ""
+  @State private var animationsRunning = false
+  
   var body: some View {
     VStack {
-      ScrollView {
-        VStack(alignment: .leading) {
-          ForEach(vm.chat, id: \.id) { message in
-            HStack {
-              Text("You: ")
-                .foregroundStyle(.black)
-                .fontWeight(.bold)
-              Text(message.question)
-              
-              Spacer()
+      
+      if vm.chat.isEmpty {
+        VStack {
+          Spacer()
+          
+          Image(systemName: "8.circle.fill")
+            .resizable()
+            .frame(width: 48, height: 48)
+            .symbolEffect(.bounce, options: .repeat(.continuous).speed(0.3), value: animationsRunning)
+            .onAppear {
+              animationsRunning.toggle()
             }
-            
-            HStack(alignment: .top) {
-              Text("AI: ")
-                .foregroundStyle(.black)
-                .fontWeight(.bold)
-              Text(message.answer)
-              
-              Spacer()
-            }
-            
-            Spacer()
-              .frame(height: 20)
-          }
+          
+          Text("Ask me anything")
+            .fontWeight(.bold)
+          
+          Spacer()
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+      } else {
+        ScrollView {
+          VStack(alignment: .leading) {
+            ForEach(vm.chat, id: \.id) { message in
+              HStack {
+                Text("You: ")
+                  .foregroundStyle(.black)
+                  .fontWeight(.bold)
+                Text(message.question)
+                
+                Spacer()
+              }
+              
+              HStack(alignment: .top) {
+                Text("AI: ")
+                  .foregroundStyle(.black)
+                  .fontWeight(.bold)
+                Text(message.answer)
+                
+                Spacer()
+              }
+              
+              Spacer()
+                .frame(height: 20)
+            }
+          }
+          .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .scrollIndicators(.hidden)
+        .symbolEffect(.bounce, options: .speed(3).repeat(3), isActive: true)
       }
-      .scrollIndicators(.hidden)
       
       TextField("Ask Question", text: $vm.question)
         .frame(height: 40)
@@ -56,6 +79,7 @@ struct ChatView: View {
       }
       .buttonStyle(.glass)
     }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)
     .padding()
     .background(.indigo.gradient)
     .overlay {
